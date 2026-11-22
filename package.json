@@ -1,0 +1,9 @@
+{
+  "name": "asik-veysel-2027-takvimi",
+  "private": true,
+  "type": "module",
+  "description": "Aşık Veysel 2027 Takvimi — ekip planlama, muhasebe ve tahsilat takibi",
+  "dependencies": {
+    "@netlify/database": "^2.0.3"
+  }
+}
