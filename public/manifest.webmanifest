@@ -1,7 +1,7 @@
 {
-  "name": "Aşık Veysel 2027 Takvimi",
-  "short_name": "AV 2027",
-  "description": "Aşık Veysel 2027 etkinlik takvimi, muhasebe ve tahsilat takibi",
+  "name": "Aşık Veysel Takvimi",
+  "short_name": "AV Takvim",
+  "description": "Aşık Veysel etkinlik takvimi, muhasebe ve tahsilat takibi",
   "lang": "tr",
   "start_url": "./index.html",
   "scope": "./",

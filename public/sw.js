@@ -1,9 +1,13 @@
-// Aşık Veysel Takvimi - Service Worker (çevrimdışı çalışma)
-const CACHE = 'av2027-v3';
+// Aşık Veysel 2027 Takvimi - Service Worker (çevrimdışı çalışma)
+const CACHE = 'av2027-v7';
 const CORE = [
   './',
   './index.html',
   './manifest.webmanifest',
+  './excel-tools.js',
+  './operasyon.js',
+  './cloud-sync.js',
+  './firebase-config.js',
   './icon-192.png',
   './icon-512.png',
   './icon-maskable-512.png'
@@ -30,7 +34,7 @@ self.addEventListener('fetch', (e) => {
   // Yalnızca kendi dosyalarımız ve statik CDN'ler önbelleğe alınır.
   // Firestore / Google API istekleri asla araya girilmeden doğrudan ağa gider (canlı senkron için şart).
   const cacheable = url.origin === self.location.origin ||
-    ['cdn.tailwindcss.com', 'cdn.sheetjs.com', 'fonts.googleapis.com', 'fonts.gstatic.com', 'www.gstatic.com'].includes(url.hostname);
+    ['cdn.tailwindcss.com', 'fonts.googleapis.com', 'fonts.gstatic.com', 'www.gstatic.com', 'cdnjs.cloudflare.com'].includes(url.hostname);
   if (!cacheable) return;
 
   // Sayfa istekleri: önce ağ, olmazsa önbellek (güncellemeler hemen gelsin)
@@ -47,7 +51,23 @@ self.addEventListener('fetch', (e) => {
     return;
   }
 
-  // Diğer her şey (Tailwind CDN, Google Fonts, ikonlar): önbellek öncelikli, arka planda yenile
+  // Kendi dosyalarımız (js, json, ikon...): önce ağ, olmazsa önbellek -> güncellemeler hemen görünür
+  if (url.origin === self.location.origin) {
+    e.respondWith(
+      fetch(req, { cache: 'no-cache' })
+        .then((res) => {
+          if (res && res.ok) {
+            const copy = res.clone();
+            caches.open(CACHE).then((c) => c.put(req, copy));
+          }
+          return res;
+        })
+        .catch(() => caches.match(req))
+    );
+    return;
+  }
+
+  // Dış kaynaklar (Tailwind CDN, Google Fonts): önbellek öncelikli, arka planda yenile
   e.respondWith(
     caches.match(req).then((cached) => {
       const network = fetch(req)

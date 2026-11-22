@@ -10,11 +10,10 @@
   <meta name="mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-  <meta name="apple-mobile-web-app-title" content="AV 2027" />
-  <meta name="description" content="Aşık Veysel 2027 etkinlik takvimi: 10 kişilik ekip için konser, tiyatro, mezuniyet ve kurulum planlama, muhasebe, damga vergisi ve tahsilat takibi." />
-  <title>AŞIK VEYSEL 2027 TAKVİMİ — Ekip Planlama, Muhasebe & Program</title>
+  <meta name="apple-mobile-web-app-title" content="AV Takvim" />
+  <title>AŞIK VEYSEL TAKVİMİ — Ekip Planlama, Muhasebe & Program</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  <script src="https://cdn.sheetjs.com/xlsx-0.20.2/package/dist/xlsx.full.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet" />
@@ -108,10 +107,10 @@
         </span>
       </div>
       <div class="flex flex-wrap items-center gap-2">
-          <label class="hidden lg:inline-flex items-center gap-1.5 text-xs text-slate-300 bg-white/5 px-2.5 py-1 rounded-lg border border-white/10">
-            <span>Kontrol Tarihi:</span>
-            <input type="date" id="referenceDateInput" class="bg-transparent text-amber-300 font-bold outline-none cursor-pointer" />
-          </label>
+        <label class="hidden lg:inline-flex items-center gap-1.5 text-xs text-slate-300 bg-white/5 px-2.5 py-1 rounded-lg border border-white/10">
+          <span>Kontrol Tarihi:</span>
+          <input type="date" id="referenceDateInput" min="2020-01-01" max="2040-12-31" class="bg-transparent text-amber-300 font-bold outline-none cursor-pointer" />
+        </label>
         <button
           type="button"
           id="openUserAccessModalBtn"
@@ -170,11 +169,11 @@
         <div class="flex items-center justify-between gap-2">
           <div class="flex items-center gap-2.5 min-w-0">
             <div class="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-gradient-to-br from-amber-500 to-orange-600 flex items-center justify-center text-white font-display font-bold shadow-sm shrink-0">
-              <span id="appYearBadge">27</span>
+              27
             </div>
             <div class="min-w-0">
-              <h1 id="appMainTitle" class="text-base sm:text-2xl font-display font-bold tracking-tight text-slate-900 truncate">
-                AŞIK VEYSEL 2027 TAKVİMİ
+              <h1 class="text-base sm:text-2xl font-display font-bold tracking-tight text-slate-900 truncate">
+                AŞIK VEYSEL TAKVİMİ
               </h1>
               <p class="text-[11px] sm:text-sm text-slate-500 truncate">
                 Konser, Tiyatro, Mezuniyet, Kurulum & Etkinlik • <strong class="text-slate-700">EK KOLTUK</strong>
@@ -257,14 +256,37 @@
 
           <button
             type="button"
-            id="exportExcelBtn"
-            title="Takvimi Excel (.xlsx) olarak indir — Takvim + Mali Özet sayfaları"
+            id="exportXlsxBtn"
             class="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl text-sm font-semibold bg-emerald-600 hover:bg-emerald-700 text-white shadow-2xs transition cursor-pointer"
+            title="Güncel takvimi Excel (.xlsx) olarak indir"
           >
             <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+              <path stroke-linecap="round" stroke-linejoin="round" d="M3 10h18M3 14h18M9 4v16M5 4h14a2 2 0 012 2v12a2 2 0 01-2 2H5a2 2 0 01-2-2V6a2 2 0 012-2z" />
             </svg>
             <span>Excel</span>
+          </button>
+
+          <button
+            type="button"
+            id="importXlsxBtn"
+            class="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl text-sm font-medium bg-white hover:bg-emerald-50 text-emerald-800 border border-emerald-200 shadow-2xs transition cursor-pointer"
+            title="Düzenlenmiş Excel dosyasını takvime yükle"
+          >
+            <span>Excel'den Yükle</span>
+          </button>
+
+          <input type="file" id="xlsxFileInput" accept=".xlsx,.xls,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" class="hidden" />
+
+          <button
+            type="button"
+            id="exportIcsBtn"
+            title="Filtrelenmiş etkinlikleri .ics (iCalendar) olarak indir — Google/Apple/Outlook takvimine aktarın"
+            class="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl text-sm font-medium bg-white hover:bg-slate-50 text-slate-700 border border-slate-200 shadow-2xs transition cursor-pointer"
+          >
+            <svg class="w-4 h-4 text-indigo-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+            </svg>
+            <span>Takvime Ekle (.ics)</span>
           </button>
 
           <button
@@ -296,7 +318,7 @@
         <span class="text-[11px] font-semibold uppercase tracking-wider text-slate-400">Toplam Kayıt</span>
         <div class="mt-1.5 flex items-baseline justify-between">
           <span id="kpiTotal" class="text-xl sm:text-3xl font-display font-bold text-slate-900">0</span>
-          <span id="kpiYearBadge" class="text-[11px] font-medium px-2 py-0.5 rounded-full bg-slate-100 text-slate-600">2027</span>
+          <span id="kpiYearChip" class="text-[11px] font-medium px-2 py-0.5 rounded-full bg-slate-100 text-slate-600">2027</span>
         </div>
       </div>
 
@@ -417,7 +439,9 @@
 
           <div class="flex md:hidden items-center gap-1.5">
             <button type="button" id="mobileExportCsvBtn" class="px-2.5 py-1.5 rounded-xl text-xs font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200 cursor-pointer">CSV</button>
-            <button type="button" id="mobileExportExcelBtn" class="px-2.5 py-1.5 rounded-xl text-xs font-semibold bg-emerald-600 text-white border border-emerald-300 cursor-pointer">Excel</button>
+            <button type="button" id="mobileExportXlsxBtn" class="px-2.5 py-1.5 rounded-xl text-xs font-semibold bg-emerald-600 text-white cursor-pointer">Excel</button>
+            <button type="button" id="mobileExportIcsBtn" class="px-2.5 py-1.5 rounded-xl text-xs font-semibold bg-indigo-50 text-indigo-700 border border-indigo-200 cursor-pointer">ICS</button>
+            <button type="button" id="mobileImportXlsxBtn" class="px-2.5 py-1.5 rounded-xl text-xs font-semibold bg-white text-emerald-800 border border-emerald-200 cursor-pointer">Yükle</button>
             <button type="button" id="mobileJsonModalBtn" class="px-2.5 py-1.5 rounded-xl text-xs font-semibold bg-amber-50 text-amber-800 border border-amber-200 cursor-pointer">JSON</button>
           </div>
 
@@ -527,38 +551,33 @@
             </button>
           </div>
 
-          <div class="flex flex-wrap items-center gap-2">
-            <div class="inline-flex items-center rounded-xl bg-white border border-slate-200 shadow-2xs overflow-hidden" role="group" aria-label="Takvim Yılı Seçimi">
-              <button
-                type="button"
-                id="prevYearBtn"
-                aria-label="Önceki Yıl"
-                class="px-2.5 py-2 text-slate-600 hover:bg-slate-100 hover:text-slate-900 transition cursor-pointer font-bold text-sm"
-              >
-                ‹
-              </button>
-              <select
-                id="yearSelect"
-                aria-label="Takvim Yılı"
-                class="px-1.5 py-2 bg-white text-sm font-bold text-slate-900 outline-none cursor-pointer border-x border-slate-200"
-              ></select>
-              <button
-                type="button"
-                id="nextYearBtn"
-                aria-label="Sonraki Yıl"
-                class="px-2.5 py-2 text-slate-600 hover:bg-slate-100 hover:text-slate-900 transition cursor-pointer font-bold text-sm"
-              >
-                ›
-              </button>
-            </div>
+          <div class="flex items-center gap-2">
+            <select
+              id="yearSelect"
+              aria-label="Yıl"
+              class="px-3.5 py-2 rounded-xl bg-white border border-slate-200 text-sm font-bold text-slate-800 focus:border-amber-500 outline-none cursor-pointer"
+            ></select>
             <select
               id="monthSelect"
               class="w-full sm:w-auto px-3.5 py-2 rounded-xl bg-white border border-slate-200 text-sm font-semibold text-slate-700 focus:border-amber-500 outline-none cursor-pointer"
-            ></select>
+            >
+              <option value="0">Ocak</option>
+              <option value="1">Şubat</option>
+              <option value="2">Mart</option>
+              <option value="3">Nisan</option>
+              <option value="4" selected>Mayıs</option>
+              <option value="5">Haziran</option>
+              <option value="6">Temmuz</option>
+              <option value="7">Ağustos</option>
+              <option value="8">Eylül</option>
+              <option value="9">Ekim</option>
+              <option value="10">Kasım</option>
+              <option value="11">Aralık</option>
+            </select>
           </div>
         </div>
 
-        <!-- Etkinlik İçeren Aylara Hızlı Atlama Butonları (seçili yıla göre dinamik) -->
+        <!-- Etkinlik İçeren Aylara Hızlı Atlama Butonları -->
         <div class="flex items-center gap-2 overflow-x-auto no-scrollbar pt-1">
           <span class="text-xs font-semibold text-slate-400 shrink-0">Hızlı Ay:</span>
           <div id="jumpMonthContainer" class="flex items-center gap-2"></div>
@@ -595,8 +614,8 @@
     <section id="listViewSection" aria-label="2027 Etkinlik Listesi" class="hidden bg-white rounded-2xl border border-slate-200/80 shadow-soft overflow-hidden">
       <div class="p-4 sm:p-6 border-b border-slate-200/80 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <div>
-          <h2 id="listViewTitle" class="text-lg sm:text-xl font-display font-bold text-slate-900">
-            2027 Tam Etkinlik Programı
+          <h2 class="text-lg sm:text-xl font-display font-bold text-slate-900">
+            <span id="listYearLabel">2027</span> Tam Etkinlik Programı
           </h2>
           <p class="text-xs sm:text-sm text-slate-500">
             Tüm etkinliklerin tarih, kategori, ödeme durumu ve EK KOLTUK listesi.
@@ -647,7 +666,7 @@
               <h2 class="text-lg sm:text-xl font-display font-bold text-slate-900">
                 Muhasebe, Fatura PDF & Damga Vergisi Raporu
               </h2>
-              <span id="accountingYearBadge" class="text-xs font-bold px-2.5 py-0.5 rounded-full bg-emerald-100 text-emerald-800">2027 Mali</span>
+              <span class="text-xs font-bold px-2.5 py-0.5 rounded-full bg-emerald-100 text-emerald-800"><span id="acctYearChip">2027</span> Mali</span>
             </div>
             <p class="text-xs sm:text-sm text-slate-500 mt-1">
               Damga vergisi oranı binde (‰) cinsinden güncellendiğinde tüm kartlar, tahsilat bakiyeleri ve rapor çıktıları anında yenilenir.
@@ -678,7 +697,21 @@
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3.5">
           <div>
             <label for="reportMonthFilter" class="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1">Ay Filtresi</label>
-            <select id="reportMonthFilter" class="w-full px-3 py-2 rounded-xl bg-slate-50 border border-slate-200 text-sm font-medium text-slate-800 outline-none cursor-pointer"></select>
+            <select id="reportMonthFilter" class="w-full px-3 py-2 rounded-xl bg-slate-50 border border-slate-200 text-sm font-medium text-slate-800 outline-none cursor-pointer">
+              <option value="all">Tüm Aylar</option>
+              <option value="4">Mayıs</option>
+              <option value="5">Haziran</option>
+              <option value="6">Temmuz</option>
+              <option value="8">Eylül</option>
+              <option value="9">Ekim</option>
+              <option value="0">Ocak</option>
+              <option value="1">Şubat</option>
+              <option value="2">Mart</option>
+              <option value="3">Nisan</option>
+              <option value="7">Ağustos</option>
+              <option value="10">Kasım</option>
+              <option value="11">Aralık</option>
+            </select>
           </div>
 
           <div>
@@ -704,12 +737,12 @@
 
           <div>
             <label for="reportStartDate" class="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1">Başlangıç</label>
-            <input type="date" id="reportStartDate" class="w-full px-3 py-2 rounded-xl bg-slate-50 border border-slate-200 text-sm font-medium text-slate-800 outline-none" />
+            <input type="date" id="reportStartDate" min="2020-01-01" max="2040-12-31" class="w-full px-3 py-2 rounded-xl bg-slate-50 border border-slate-200 text-sm font-medium text-slate-800 outline-none" />
           </div>
 
           <div>
             <label for="reportEndDate" class="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1">Bitiş</label>
-            <input type="date" id="reportEndDate" class="w-full px-3 py-2 rounded-xl bg-slate-50 border border-slate-200 text-sm font-medium text-slate-800 outline-none" />
+            <input type="date" id="reportEndDate" min="2020-01-01" max="2040-12-31" class="w-full px-3 py-2 rounded-xl bg-slate-50 border border-slate-200 text-sm font-medium text-slate-800 outline-none" />
           </div>
         </div>
 
@@ -744,6 +777,7 @@
             <button type="button" id="exportFinanceSummaryCsvBtn" class="px-3.5 py-2 rounded-xl text-xs font-bold bg-slate-800 hover:bg-slate-900 text-white transition cursor-pointer">
               Mali İcmal CSV
             </button>
+            <button type="button" id="exportReportXlsxBtn" class="px-3.5 py-2 rounded-xl text-xs font-bold bg-emerald-700 hover:bg-emerald-800 text-white transition cursor-pointer">Rapor Excel İndir</button>
             <button type="button" id="exportReportCsvBtn" class="px-3.5 py-2 rounded-xl text-xs font-bold bg-emerald-600 hover:bg-emerald-700 text-white transition cursor-pointer">
               Rapor CSV İndir
             </button>
@@ -758,7 +792,7 @@
       <div class="bg-white rounded-2xl border border-slate-200/80 shadow-soft overflow-hidden print-break-avoid">
         <div class="p-4 sm:px-6 border-b border-slate-200/80 flex items-center justify-between">
           <div>
-            <h3 id="summaryYearTitle" class="text-base sm:text-lg font-display font-bold text-slate-900">Ay & Kategori Bazlı Mali Özet (2027)</h3>
+            <h3 class="text-base sm:text-lg font-display font-bold text-slate-900">Ay & Kategori Bazlı Mali Özet (<span id="summaryYearLabel">2027</span>)</h3>
             <p class="text-xs text-slate-500">Aylık etkinlik sayıları, brüt tutar, damga vergisi ve tahsilat oranı</p>
           </div>
         </div>
@@ -942,7 +976,7 @@
       <div class="px-6 py-4 bg-slate-900 text-white flex items-center justify-between">
         <div>
           <span class="text-xs font-semibold uppercase tracking-wider text-amber-400">10 Kişilik Ekip Kullanımı</span>
-          <h3 id="teamModalTitle" class="text-lg font-display font-bold mt-0.5">Aşık Veysel 2027 Takvimi Kullanım Rehberi</h3>
+          <h3 id="teamModalTitle" class="text-lg font-display font-bold mt-0.5">Aşık Veysel Takvimi Kullanım Rehberi</h3>
         </div>
         <button type="button" id="closeTeamModalBtn" class="p-2 rounded-xl text-slate-300 hover:text-white hover:bg-white/10 transition cursor-pointer">
           <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
@@ -983,7 +1017,7 @@
     <div class="bg-white rounded-2xl max-w-lg w-full shadow-card border border-slate-200 overflow-hidden max-h-[92vh] flex flex-col">
       <div class="px-5 py-3.5 bg-slate-900 text-white flex items-center justify-between shrink-0">
         <div>
-          <span id="eventFormBadge" class="text-[11px] font-semibold uppercase tracking-wider text-amber-400">2027 TAKVİM KAYDI</span>
+          <span id="eventFormBadge" class="text-[11px] font-semibold uppercase tracking-wider text-amber-400">TAKVİM KAYDI</span>
           <h3 id="eventFormModalTitle" class="text-base sm:text-lg font-display font-bold mt-0.5">+ Yeni Etkinlik Ekle</h3>
         </div>
         <button type="button" id="closeEventFormModalBtn" class="p-2 rounded-xl text-slate-300 hover:text-white hover:bg-white/10 transition cursor-pointer">
@@ -1025,8 +1059,8 @@
             </select>
           </div>
           <div>
-            <label for="eventDateInput" id="eventDateLabel" class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1">Tarih (2027)</label>
-            <input type="date" id="eventDateInput" required class="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-200 text-sm font-medium text-slate-900 outline-none" />
+            <label for="eventDateInput" class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1">Tarih</label>
+            <input type="date" id="eventDateInput" min="2020-01-01" max="2040-12-31" required class="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-200 text-sm font-medium text-slate-900 outline-none" />
           </div>
         </div>
 
@@ -1073,7 +1107,7 @@
             </div>
             <div>
               <label for="eventDueDateInput" class="block text-[11px] font-bold text-slate-700 mb-1">Ödeme Vadesi</label>
-              <input type="date" id="eventDueDateInput" class="w-full px-3 py-2 rounded-xl bg-white border border-slate-200 text-xs sm:text-sm outline-none" />
+              <input type="date" id="eventDueDateInput" min="2020-01-01" max="2040-12-31" class="w-full px-3 py-2 rounded-xl bg-white border border-slate-200 text-xs sm:text-sm outline-none" />
             </div>
           </div>
           <div id="eventCollectionPreview" class="text-[11px] text-slate-700 bg-white px-3 py-2 rounded-lg border border-sky-200/70 flex justify-between"></div>
@@ -1167,26 +1201,6 @@
         </div>
         <textarea id="jsonTextarea" rows="8" class="w-full rounded-xl bg-slate-50 border border-slate-200 p-3 text-xs font-mono outline-none"></textarea>
         <p id="jsonErrorMsg" class="hidden text-xs text-rose-600 font-semibold"></p>
-
-        <!-- Excel İçe Aktarma -->
-        <div class="pt-3 border-t border-slate-100 space-y-2">
-          <div class="text-xs font-bold uppercase tracking-wider text-slate-500">Excel ile Takvim Entegrasyonu</div>
-          <div class="flex flex-wrap items-center gap-2">
-            <label class="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-bold bg-sky-600 hover:bg-sky-700 text-white cursor-pointer">
-              <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-              </svg>
-              <span>Excel Dosyasından İçe Aktar (.xlsx / .xls)</span>
-              <input type="file" id="excelImportFileInput" accept=".xlsx,.xls" class="hidden" />
-            </label>
-            <button type="button" id="exportExcelFromBackupBtn" class="px-3.5 py-2 rounded-xl text-xs font-bold bg-emerald-600 hover:bg-emerald-700 text-white cursor-pointer">Excel Olarak İndir</button>
-          </div>
-          <p class="text-[11px] text-slate-500 leading-relaxed">
-            İçe aktarma; dosyadaki "Tarih" ve "Etkinlik/Sanatçı" kolonlarını okur (Kategori, Ücret, Rezervasyon Durumu, Fatura Durumu ve Ödeme Vadesi kolonları varsa onlar da alınır).
-            Aynı tarih ve isimde zaten mevcut olan kayıtlar atlanır; mevcut kayıtlar silinmez.
-          </p>
-        </div>
-
         <div class="flex justify-end gap-2">
           <button type="button" id="cancelJsonModalBtn" class="px-4 py-2 rounded-xl text-sm font-semibold text-slate-600 cursor-pointer">Kapat</button>
           <button type="button" id="applyJsonImportBtn" class="px-5 py-2 rounded-xl text-sm font-bold bg-emerald-600 text-white cursor-pointer">İçe Aktar</button>
@@ -1393,7 +1407,6 @@
     const STORAGE_USERS_KEY = 'asik_veysel_2027_yetkili_kullanicilar_v1';
     const STORAGE_SESSION_KEY = 'asik_veysel_2027_oturum_durumu_v1';
     const STORAGE_DUE_MUTE_KEY = 'asik_veysel_2027_uyari_susturma_v1';
-    const STORAGE_YEAR_KEY = 'asik_veysel_takvim_yili_v1';
     const DEFAULT_ADMIN_PASS = 'yonetici2027';
     const DEFAULT_STAMP_RATE_PERMILLE = 9.48;
 
@@ -1407,83 +1420,6 @@
 
     let referenceIsoDate = getDefaultReferenceIsoDate();
     let dueModalShownThisLoad = false;
-
-    function loadAppYear() {
-      try {
-        const v = parseInt(localStorage.getItem(STORAGE_YEAR_KEY), 10);
-        if (v >= 2020 && v <= 2100) return v;
-      } catch (e) {}
-      return 2027;
-    }
-
-    let appYear = loadAppYear();
-
-    function persistAppYear() {
-      try { localStorage.setItem(STORAGE_YEAR_KEY, String(appYear)); } catch (e) {}
-    }
-
-    function applyYearToDom() {
-      const y = appYear;
-      const titleEl = document.getElementById('appMainTitle');
-      if (titleEl) titleEl.textContent = `AŞIK VEYSEL ${y} TAKVİMİ`;
-      const badgeEl = document.getElementById('appYearBadge');
-      if (badgeEl) badgeEl.textContent = String(y).slice(-2);
-      const kpiYearEl = document.getElementById('kpiYearBadge');
-      if (kpiYearEl) kpiYearEl.textContent = String(y);
-      document.title = `AŞIK VEYSEL ${y} TAKVİMİ — Ekip Planlama, Muhasebe & Program`;
-      const teamTitleEl = document.getElementById('teamModalTitle');
-      if (teamTitleEl) teamTitleEl.textContent = `Aşık Veysel ${y} Takvimi Kullanım Rehberi`;
-
-      const isoMin = `${y}-01-01`;
-      const isoMax = `${y}-12-31`;
-      ['referenceDateInput', 'eventDateInput', 'eventDueDateInput', 'reportStartDate', 'reportEndDate'].forEach(id => {
-        const el = document.getElementById(id);
-        if (el) { el.min = isoMin; el.max = isoMax; }
-      });
-
-      const monthSelect = document.getElementById('monthSelect');
-      if (monthSelect) {
-        monthSelect.innerHTML = MONTHS_TR.map((m, i) => `<option value="${i}">${m} ${y}</option>`).join('');
-        monthSelect.value = String(state.currentMonth);
-      }
-
-      const reportMonthFilter = document.getElementById('reportMonthFilter');
-      if (reportMonthFilter) {
-        reportMonthFilter.innerHTML = `<option value="all">Tüm ${y} Ayları</option>` + MONTHS_TR.map((m, i) => `<option value="${i}">${m} ${y}</option>`).join('');
-        reportMonthFilter.value = state.reportMonth || 'all';
-      }
-
-      const yearSelect = document.getElementById('yearSelect');
-      if (yearSelect) {
-        const start = y - 3, end = y + 3;
-        yearSelect.innerHTML = Array.from({ length: end - start + 1 }, (_, i) => `<option value="${start + i}">${start + i}</option>`).join('');
-        yearSelect.value = String(y);
-      }
-
-      const formBadge = document.getElementById('eventFormBadge');
-      if (formBadge) formBadge.textContent = `${y} TAKVİM KAYDI`;
-      const dateLabel = document.getElementById('eventDateLabel');
-      if (dateLabel) dateLabel.textContent = `Tarih (${y})`;
-      const listTitle = document.getElementById('listViewTitle');
-      if (listTitle) listTitle.textContent = `${y} Tam Etkinlik Programı`;
-      const accBadge = document.getElementById('accountingYearBadge');
-      if (accBadge) accBadge.textContent = `${y} Mali`;
-      const summaryTitle = document.getElementById('summaryYearTitle');
-      if (summaryTitle) summaryTitle.textContent = `Ay & Kategori Bazlı Mali Özet (${y})`;
-    }
-
-    function setYear(newYear) {
-      const y = Math.min(2100, Math.max(2020, Number(newYear) || 2027));
-      if (y === appYear) { applyYearToDom(); return; }
-      appYear = y;
-      persistAppYear();
-      state.reportMonth = 'all';
-      state.reportStartDate = '';
-      state.reportEndDate = '';
-      applyYearToDom();
-      renderApp();
-      showToast(`${y} takvim yılına geçildi. Bu yıl için kayıt eklemeye başlayabilirsiniz.`);
-    }
 
     function isEventDueAndUnpaid(ev) {
       if (!ev || ev.isFree || (Number(ev.feeValue) || 0) <= 0) return false;
@@ -1984,6 +1920,12 @@
       const validInvoiceStatuses = ['Beklemede', 'Kesildi', 'Muaf'];
       const invoiceStatus = validInvoiceStatuses.includes(item.invoiceStatus) ? item.invoiceStatus : (isFree ? 'Muaf' : 'Beklemede');
       const dueDate = item.dueDate ? String(item.dueDate).trim() : '';
+      const validOpStatuses = ['Bekliyor', 'Hazırlanıyor', 'Hazır', 'Tamamlandı'];
+      const opStatus = validOpStatuses.includes(item.opStatus) ? item.opStatus : 'Bekliyor';
+      const opChecks = {};
+      if (item.opChecks && typeof item.opChecks === 'object') {
+        Object.keys(item.opChecks).forEach(k => { if (item.opChecks[k]) opChecks[k] = true; });
+      }
 
       return {
         id: item.id || fallbackId,
@@ -2001,6 +1943,10 @@
         invoiceStatus,
         dueDate,
         invoiceFiles: Array.isArray(item.invoiceFiles) ? item.invoiceFiles : [],
+        opStatus,
+        opNote: String(item.opNote || ''),
+        opChecks,
+        opFiles: Array.isArray(item.opFiles) ? item.opFiles : [],
         updatedBy: item.updatedBy || currentActor,
         updatedAt: item.updatedAt || null,
         ...parsed,
@@ -2071,6 +2017,7 @@
           stampDutyExempt: Boolean(ev.stampDutyExempt), depositAmount: Number(ev.depositAmount) || 0,
           interimPayment: Number(ev.interimPayment) || 0, invoiceStatus: ev.invoiceStatus || 'Beklemede',
           dueDate: ev.dueDate || '', invoiceFiles: Array.isArray(ev.invoiceFiles) ? ev.invoiceFiles : [],
+          opStatus: ev.opStatus || 'Bekliyor', opNote: ev.opNote || '', opChecks: ev.opChecks || {}, opFiles: Array.isArray(ev.opFiles) ? ev.opFiles : [],
           updatedBy: ev.updatedBy || currentActor, updatedAt: ev.updatedAt || null, isFree: ev.isFree
         }));
         localStorage.setItem(STORAGE_EVENTS_KEY, JSON.stringify(minimal));
@@ -2083,6 +2030,8 @@
     const state = {
       view: 'calendar',
       currentMonth: 4,
+      currentYear: 2027,
+      year: 2027,
       search: '',
       category: 'Tümü',
       bookingStatus: 'Tümü',
@@ -2140,13 +2089,9 @@
       return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#039;');
     }
 
-    function getYearEvents() {
-      return currentEvents.filter(ev => ev.year === appYear);
-    }
-
     function getFilteredEvents() {
       const q = state.search.trim().toLocaleLowerCase('tr');
-      return getYearEvents().filter(ev => {
+      return currentEvents.filter(ev => {
         const dueFormatted = formatIsoToDotDate(ev.dueDate);
         const matchesSearch = !q || ev.name.toLocaleLowerCase('tr').includes(q) || ev.category.toLocaleLowerCase('tr').includes(q) ||
           (ev.bookingStatus && ev.bookingStatus.toLocaleLowerCase('tr').includes(q)) || dueFormatted.includes(q) ||
@@ -2158,7 +2103,8 @@
           (state.invoiceFilter === 'Günü Gelen Ödenmemiş' && isEventDueAndUnpaid(ev)) ||
           (state.invoiceFilter === 'Bakiye Açık' && col.remaining > 0);
         const matchesFee = state.fee === 'Tümü' || (state.fee === 'Ücretsiz' && ev.isFree) || (state.fee === 'Ücretli' && !ev.isFree);
-        return matchesSearch && matchesCategory && matchesBookingStatus && matchesInvoice && matchesFee;
+        const matchesYear = state.year === 'all' || ev.year === state.year;
+        return matchesSearch && matchesCategory && matchesBookingStatus && matchesInvoice && matchesFee && matchesYear;
       });
     }
 
@@ -2284,46 +2230,32 @@
       const hasActiveFilter = state.search.trim() !== '' || state.category !== 'Tümü' || state.bookingStatus !== 'Tümü' || state.invoiceFilter !== 'Tümü' || state.fee !== 'Tümü';
       document.getElementById('resetFiltersBtn').classList.toggle('hidden', !hasActiveFilter);
       document.getElementById('clearSearchBtn').classList.toggle('hidden', state.search.trim() === '');
-      const yearTotal = getYearEvents().length;
-      document.getElementById('resultCounter').textContent = hasActiveFilter ? `${total} / ${yearTotal} etkinlik` : `${yearTotal} etkinlik`;
+      const yearScoped = state.year === 'all' ? currentEvents.length : currentEvents.filter(e => e.year === state.year).length;
+      document.getElementById('resultCounter').textContent = hasActiveFilter ? `${total} / ${yearScoped} etkinlik` : `${yearScoped} etkinlik`;
     }
 
     function updateJumpMonthButtons() {
-      document.querySelectorAll('.jump-month-btn').forEach(btn => {
-        const mIdx = parseInt(btn.dataset.jumpMonth, 10);
-        const isActive = mIdx === state.currentMonth;
-        btn.className = isActive
-          ? 'jump-month-btn shrink-0 px-3 py-1 rounded-lg text-xs font-semibold border bg-slate-900 text-white border-slate-900 shadow-2xs transition cursor-pointer'
-          : 'jump-month-btn shrink-0 px-3 py-1 rounded-lg text-xs font-semibold border bg-white text-slate-700 hover:bg-amber-50 border-slate-200 transition cursor-pointer';
-      });
-    }
-
-    function buildJumpMonthButtons() {
-      const container = document.getElementById('jumpMonthContainer');
-      if (!container) return;
-      const yearEvents = getYearEvents();
-      const monthsWithEvents = [];
-      for (let mIdx = 0; mIdx < 12; mIdx++) {
-        const count = yearEvents.filter(e => e.monthIndex === mIdx).length;
-        if (count > 0) monthsWithEvents.push({ mIdx, count });
-      }
-      if (!monthsWithEvents.length) {
-        container.innerHTML = '<span class="text-xs text-slate-400">Bu yılda henüz kayıt yok</span>';
-        return;
-      }
-      container.innerHTML = monthsWithEvents.map(({ mIdx, count }) => `
-        <button type="button" data-jump-month="${mIdx}" class="jump-month-btn shrink-0 px-3 py-1 rounded-lg text-xs font-semibold border transition cursor-pointer">
-          ${escapeHtml(MONTHS_TR[mIdx])} <span class="opacity-75">(${count})</span>
-        </button>
-      `).join('');
-      container.querySelectorAll('.jump-month-btn').forEach(btn => {
+      const cont = document.getElementById('jumpMonthContainer');
+      if (!cont) return;
+      const counts = {};
+      currentEvents.forEach(e => { if (e.year === state.currentYear) counts[e.monthIndex] = (counts[e.monthIndex] || 0) + 1; });
+      const months = Object.keys(counts).map(Number).sort((a, b) => a - b);
+      if (!months.length) { cont.innerHTML = `<span class="text-xs text-slate-400">${state.currentYear} yılında kayıt yok</span>`; return; }
+      cont.innerHTML = months.map(mIdx => {
+        const active = mIdx === state.currentMonth;
+        const cls = active
+          ? 'bg-slate-900 text-white border-slate-900 shadow-2xs'
+          : 'bg-white text-slate-700 hover:bg-amber-50 border-slate-200';
+        return `<button type="button" data-jump-month="${mIdx}" class="jump-month-btn shrink-0 px-3 py-1 rounded-lg text-xs font-semibold border transition cursor-pointer ${cls}">${MONTHS_TR[mIdx]} <span class="opacity-75">(${counts[mIdx]})</span></button>`;
+      }).join('');
+      cont.querySelectorAll('.jump-month-btn').forEach(btn => {
         btn.addEventListener('click', () => { state.currentMonth = parseInt(btn.dataset.jumpMonth, 10); setView('calendar'); });
       });
     }
 
     function renderCalendar(filteredEvents) {
       const monthIndex = state.currentMonth;
-      const year = appYear;
+      const year = state.currentYear;
       const firstDayOfMonth = new Date(year, monthIndex, 1);
       const startOffset = (firstDayOfMonth.getDay() + 6) % 7;
       const daysInMonth = new Date(year, monthIndex + 1, 0).getDate();
@@ -2331,9 +2263,8 @@
       document.getElementById('monthSelect').value = String(monthIndex);
       document.getElementById('currentMonthTitle').textContent = `${MONTHS_TR[monthIndex]} ${year}`;
 
-      const monthEvents = filteredEvents.filter(e => e.monthIndex === monthIndex).sort((a, b) => a.day - b.day || a.id - b.id);
+      const monthEvents = filteredEvents.filter(e => e.monthIndex === monthIndex && e.year === year).sort((a, b) => a.day - b.day || a.id - b.id);
       document.getElementById('currentMonthSubtitle').textContent = monthEvents.length > 0 ? `Bu ayda ${monthEvents.length} etkinlik bulunuyor` : 'Bu ayda seçili filtreye uygun etkinlik yok';
-      buildJumpMonthButtons();
       updateJumpMonthButtons();
 
       const eventsByDay = {};
@@ -2418,7 +2349,7 @@
       monthListContainer.innerHTML = '';
 
       if (monthEvents.length === 0) {
-        monthListContainer.innerHTML = `<div class="col-span-full py-6 text-center text-sm text-slate-500 bg-white rounded-xl border border-dashed border-slate-200">${escapeHtml(MONTHS_TR[monthIndex])} ${year} ayında kayıt bulunmuyor.</div>`;
+        monthListContainer.innerHTML = `<div class="col-span-full py-6 text-center text-sm text-slate-500 bg-white rounded-xl border border-dashed border-slate-200">${MONTHS_TR[monthIndex]} ${year} ayında kayıt bulunmuyor.</div>`;
         return;
       }
 
@@ -2443,6 +2374,7 @@
               <span class="inline-flex items-center px-2 py-0.5 rounded-md text-[11px] font-semibold border ${style.pill}">${escapeHtml(ev.category)}</span>
               ${bStyle.showBadge ? `<span class="inline-flex items-center px-2 py-0.5 rounded-md text-[11px] font-bold border ${bStyle.pill}">${escapeHtml(bStyle.badgeText)}</span>` : ''}
               ${pdfCount > 0 ? `<span class="inline-flex items-center px-2 py-0.5 rounded-md text-[11px] font-bold bg-emerald-50 text-emerald-800 border border-emerald-200">PDF (${pdfCount})</span>` : ''}
+              ${(window.__ops && window.__ops.hasActivity(ev)) ? `<span class="inline-flex items-center px-2 py-0.5 rounded-md text-[11px] font-bold bg-indigo-50 text-indigo-800 border border-indigo-200">Op: ${escapeHtml(window.__ops.summaryText(ev))}</span>` : ''}
               ${dueUnpaid ? '<span class="inline-flex items-center px-2 py-0.5 rounded-md text-[11px] font-bold bg-rose-100 text-rose-800 border border-rose-200">Ödeme Bekliyor</span>' : ''}
             </div>
           </div>
@@ -2573,6 +2505,13 @@
                 <div class="p-2 rounded-lg bg-sky-50/70"><span class="text-sky-700 block">Tahsil Edilen</span><strong class="text-sky-800">${escapeHtml(formatTL(col.collected))}</strong></div>
                 <div class="p-2 rounded-lg bg-rose-50/70"><span class="text-rose-700 block">Kalan Bakiye</span><strong class="text-rose-800">${escapeHtml(formatTL(col.remaining))}</strong></div>
               </div>
+              <button type="button" data-ops-ev-id="${ev.id}" class="open-ops-btn w-full flex items-center justify-between gap-2 px-3 py-2 rounded-xl text-xs font-bold bg-indigo-50 hover:bg-indigo-100 text-indigo-900 border border-indigo-200 cursor-pointer">
+                <span class="inline-flex items-center gap-1.5">
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 7a2 2 0 012-2h4l2 2h8a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2V7z"/></svg>
+                  Operasyon Dosyası
+                </span>
+                <span class="text-[11px] font-semibold text-indigo-700">${escapeHtml(window.__ops ? window.__ops.summaryText(ev) : '')}</span>
+              </button>
               <div class="pt-2 border-t border-slate-100 flex flex-wrap items-center justify-between gap-2">
                 <div class="flex flex-wrap items-center gap-1.5">
                   <span class="text-[11px] font-bold text-slate-500">Muhasebe PDF:</span>
@@ -2645,6 +2584,7 @@
         openUserAccessModal();
         return;
       }
+      if (!defaultDateIso) defaultDateIso = `${state.currentYear}-${String(state.currentMonth + 1).padStart(2, '0')}-01`;
       const modal = document.getElementById('eventFormModal');
       document.getElementById('eventNameError').classList.add('hidden');
       document.getElementById('deleteConfirmBox').classList.add('hidden');
@@ -2672,8 +2612,9 @@
         pendingFormPdfFiles = [];
         document.getElementById('eventFormModalTitle').textContent = '+ Yeni Etkinlik Ekle';
         document.getElementById('editEventId').value = '';
+        document.getElementById('eventNameInput').value = '';
         document.getElementById('eventCategorySelect').value = 'Konser';
-        document.getElementById('eventDateInput').value = defaultDateIso || `${appYear}-05-07`;
+        document.getElementById('eventDateInput').value = defaultDateIso;
         document.getElementById('eventFreeToggle').checked = false;
         document.getElementById('eventExemptToggle').checked = false;
         document.getElementById('eventFeeInput').disabled = false;
@@ -2726,7 +2667,8 @@
     }
 
     function getReportRows() {
-      return getSortedEvents(getYearEvents()).filter(ev => {
+      return getSortedEvents(currentEvents).filter(ev => {
+        if (state.year !== 'all' && ev.year !== state.year) return false;
         if (state.reportMonth !== 'all' && ev.monthIndex !== Number(state.reportMonth)) return false;
         if (state.reportCategory !== 'Tümü' && ev.category !== state.reportCategory) return false;
         const m = calculateStampDutyMetrics(ev.feeValue, ev.isFree, ev.stampDutyExempt, stampDutyRatePermille);
@@ -2745,13 +2687,15 @@
       const summaryBody = document.getElementById('monthlyCategorySummaryBody');
       const summaryFoot = document.getElementById('monthlyCategorySummaryFoot');
       if (summaryBody && summaryFoot) {
-        const yearEvents = getYearEvents();
         const allMonthRows = [];
         let sumCounts = { Konser: 0, Tiyatro: 0, Mezuniyet: 0, Kurulum: 0, Etkinlik: 0 };
         let sumGross = 0, sumStamp = 0, sumCollected = 0, sumRemaining = 0;
 
-        for (let mIdx = 0; mIdx < 12; mIdx++) {
-          const mEvents = yearEvents.filter(e => e.monthIndex === mIdx);
+        const yearsInScope = [...new Set(currentEvents.filter(e => state.year === 'all' || e.year === state.year).map(e => e.year))].sort((a, b) => a - b);
+        const monthPairs = [];
+        yearsInScope.forEach(y => { for (let mi = 0; mi < 12; mi++) monthPairs.push([y, mi]); });
+        for (const [yr, mIdx] of monthPairs) {
+          const mEvents = currentEvents.filter(e => e.monthIndex === mIdx && e.year === yr);
           if (mEvents.length === 0) continue;
           const cMap = { Konser: 0, Tiyatro: 0, Mezuniyet: 0, Kurulum: 0, Etkinlik: 0 };
           let mGross = 0, mStamp = 0, mCollected = 0, mRemaining = 0;
@@ -2767,7 +2711,7 @@
           const pct = mGross > 0 ? Math.min(100, (mCollected / mGross) * 100) : 100;
           allMonthRows.push(`
             <tr class="hover:bg-amber-50/40">
-              <td class="py-2.5 px-3 font-bold text-slate-900">${escapeHtml(MONTHS_TR[mIdx])} ${appYear}</td>
+              <td class="py-2.5 px-3 font-bold text-slate-900">${escapeHtml(MONTHS_TR[mIdx])} ${yr}</td>
               <td class="py-2.5 px-3 text-center">${cMap.Konser}</td>
               <td class="py-2.5 px-3 text-center">${cMap.Tiyatro}</td>
               <td class="py-2.5 px-3 text-center">${cMap.Mezuniyet}</td>
@@ -2918,12 +2862,91 @@
         const col = calculateCollectionMetrics(ev);
         return [ev.date, ev.name, ev.category, formatTL(m.grossAmount), formatTL(col.collected), formatTL(col.remaining), formatTL(m.stampDuty), formatTL(m.netAmount)].map(v => `"${String(v).replace(/"/g, '""')}"`).join(';');
       });
-      downloadCsvBlob([headers.join(';'), ...lines].join('\n'), `asik-veysel-${appYear}-mali-icmal.csv`);
+      downloadCsvBlob([headers.join(';'), ...lines].join('\n'), `asik-veysel-${state.year === 'all' ? 'tum-yillar' : state.year}-mali-icmal.csv`);
       showToast('Mali icmal CSV indirildi.');
     }
 
     function exportAccountingReportCsv() {
       exportFinanceSummaryCsv();
+    }
+
+    // ===== iCalendar (.ics) Dışa Aktarma =====
+    function escapeIcsText(value) {
+      return String(value)
+        .replace(/\\/g, '\\\\')
+        .replace(/;/g, '\\;')
+        .replace(/,/g, '\\,')
+        .replace(/\r?\n/g, '\\n');
+    }
+
+    function icsFolding(line) {
+      if (line.length <= 74) return line;
+      const chunks = [];
+      let rest = line;
+      chunks.push(rest.slice(0, 74));
+      rest = rest.slice(74);
+      while (rest.length) {
+        chunks.push(' ' + rest.slice(0, 73));
+        rest = rest.slice(73);
+      }
+      return chunks.join('\r\n');
+    }
+
+    function icsNextDay(dateObj) {
+      const d = new Date(dateObj.getTime());
+      d.setDate(d.getDate() + 1);
+      return `${d.getFullYear()}${String(d.getMonth() + 1).padStart(2, '0')}${String(d.getDate()).padStart(2, '0')}`;
+    }
+
+    function exportToIcs(rows) {
+      if (!rows.length) { showToast('Aktarılacak etkinlik bulunamadı.'); return; }
+      const stamp = new Date().toISOString().replace(/[-:]/g, '').replace(/\.\d{3}/, '');
+      const yearLabel = state.year === 'all' ? 'Tüm Yıllar' : state.year;
+      const lines = [
+        'BEGIN:VCALENDAR',
+        'VERSION:2.0',
+        'PRODID:-//Asik Veysel Takvimi//TR',
+        'CALSCALE:GREGORIAN',
+        'METHOD:PUBLISH',
+        `X-WR-CALNAME:Aşık Veysel ${yearLabel} Takvimi`,
+        'X-WR-TIMEZONE:Europe/Istanbul',
+        `REV:${stamp}`
+      ];
+      rows.forEach((ev, idx) => {
+        const dt = ev.isoKey.replace(/-/g, '');
+        const col = calculateCollectionMetrics(ev);
+        const descParts = [
+          `Kategori: ${ev.category}`,
+          `Durum: ${ev.bookingStatus || 'Normal'}`,
+          ev.isFree ? 'Ücret: ÜCRETSİZ' : `Ücret: ${formatTL(ev.feeValue)}`,
+          `Tahsil Edilen: ${formatTL(col.collected)}`,
+          `Kalan: ${formatTL(col.remaining)}`,
+          ev.dueDate ? `Ödeme Vadesi: ${formatIsoToDotDate(ev.dueDate)}` : '',
+          ev.status ? `Not: ${ev.status}` : ''
+        ].filter(Boolean);
+        lines.push(
+          'BEGIN:VEVENT',
+          `UID:asik-veysel-${ev.year || state.currentYear}-${ev.id || idx + 1}@asikveyseltakvim`,
+          `DTSTAMP:${stamp}`,
+          `DTSTART;VALUE=DATE:${dt}`,
+          `DTEND;VALUE=DATE:${icsNextDay(ev.dateObj)}`,
+          icsFolding(`SUMMARY:${escapeIcsText(`${ev.name} (${ev.category})`)}`),
+          icsFolding(`DESCRIPTION:${escapeIcsText(descParts.join('\n'))}`),
+          'TRANSP:TRANSPARENT',
+          'END:VEVENT'
+        );
+      });
+      lines.push('END:VCALENDAR');
+      const blob = new Blob([lines.join('\r\n')], { type: 'text/calendar;charset=utf-8;' });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = `asik-veysel-${state.year === 'all' ? 'tum-yillar' : state.year}-takvimi.ics`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      URL.revokeObjectURL(url);
+      showToast(`${rows.length} etkinlik .ics olarak indirildi — telefon veya bilgisayar takviminize aktarabilirsiniz.`);
     }
 
     function exportToCsv(rows) {
@@ -2932,7 +2955,7 @@
         const col = calculateCollectionMetrics(ev);
         return [ev.date, ev.weekdayName, ev.name, ev.category, ev.bookingStatus || 'Normal', ev.isFree ? 'ÜCRETSİZ' : formatTL(ev.feeValue), formatTL(col.collected), formatTL(col.remaining), ev.status].map(v => `"${String(v).replace(/"/g, '""')}"`).join(';');
       });
-      downloadCsvBlob([headers.join(';'), ...lines].join('\n'), `asik-veysel-${appYear}-takvimi.csv`);
+      downloadCsvBlob([headers.join(';'), ...lines].join('\n'), `asik-veysel-${state.year === 'all' ? 'tum-yillar' : state.year}-takvimi.csv`);
       showToast(`${rows.length} kayıt CSV olarak indirildi.`);
     }
 
@@ -2946,184 +2969,6 @@
       link.click();
       document.body.removeChild(link);
       URL.revokeObjectURL(url);
-    }
-
-    // ===== Excel (.xlsx) Entegrasyonu =====
-    function exportToExcel() {
-      if (typeof window.XLSX === 'undefined') {
-        showToast('Excel modülü henüz yüklenmedi. İnternet bağlantınızı kontrol edip sayfayı yenileyin.');
-        return;
-      }
-      const rows = getSortedEvents(getFilteredEvents());
-      if (!rows.length) { showToast('Aktarılacak etkinlik bulunamadı.'); return; }
-
-      const header = ['Tarih', 'Gün', 'Etkinlik/Sanatçı', 'Kategori', 'Rezervasyon Durumu', 'Tutar (TL)', 'Tahsil Edilen (TL)', 'Kalan Tahsilat (TL)', 'Fatura Durumu', 'Ödeme Vadesi', 'Damga Vergisi (TL)', 'Net Tutar (TL)', 'Not'];
-      const data = rows.map(ev => {
-        const m = calculateStampDutyMetrics(ev.feeValue, ev.isFree, ev.stampDutyExempt, stampDutyRatePermille);
-        const col = calculateCollectionMetrics(ev);
-        return [
-          ev.date, ev.weekdayName, ev.name, ev.category,
-          ev.bookingStatus || 'Normal',
-          ev.isFree ? 0 : (Number(ev.feeValue) || 0),
-          col.collected, col.remaining,
-          ev.invoiceStatus || 'Beklemede',
-          ev.dueDate ? formatIsoToDotDate(ev.dueDate) : '',
-          m.stampDuty, m.netAmount,
-          ev.status
-        ];
-      });
-
-      const takvimAoA = [[`AŞIK VEYSEL ${appYear} TAKVİMİ`], [], header, ...data];
-      const wsTakvim = window.XLSX.utils.aoa_to_sheet(takvimAoA);
-      wsTakvim['!cols'] = [{ wch: 12 }, { wch: 12 }, { wch: 32 }, { wch: 12 }, { wch: 18 }, { wch: 14 }, { wch: 16 }, { wch: 16 }, { wch: 14 }, { wch: 14 }, { wch: 16 }, { wch: 16 }, { wch: 16 }];
-
-      const maliHeader = ['Ay', 'Konser', 'Tiyatro', 'Mezuniyet', 'Kurulum', 'Etkinlik', 'Brüt Tutar (TL)', 'Damga Vergisi (TL)', 'Tahsil Edilen (TL)', 'Kalan Bakiye (TL)'];
-      const maliData = [];
-      for (let mIdx = 0; mIdx < 12; mIdx++) {
-        const mEvents = getYearEvents().filter(e => e.monthIndex === mIdx);
-        if (!mEvents.length) continue;
-        const cMap = { Konser: 0, Tiyatro: 0, Mezuniyet: 0, Kurulum: 0, Etkinlik: 0 };
-        let mGross = 0, mStamp = 0, mCollected = 0, mRemaining = 0;
-        mEvents.forEach(ev => {
-          if (cMap[ev.category] !== undefined) cMap[ev.category] += 1;
-          const stampM = calculateStampDutyMetrics(ev.feeValue, ev.isFree, ev.stampDutyExempt, stampDutyRatePermille);
-          const colM = calculateCollectionMetrics(ev);
-          mGross += stampM.grossAmount; mStamp += stampM.stampDuty; mCollected += colM.collected; mRemaining += colM.remaining;
-        });
-        maliData.push([`${MONTHS_TR[mIdx]} ${appYear}`, cMap.Konser, cMap.Tiyatro, cMap.Mezuniyet, cMap.Kurulum, cMap.Etkinlik, mGross, mStamp, mCollected, mRemaining]);
-      }
-      const wsMali = window.XLSX.utils.aoa_to_sheet([[`AŞIK VEYSEL ${appYear} MALİ ÖZET`], [], maliHeader, ...maliData]);
-      wsMali['!cols'] = [{ wch: 14 }, { wch: 9 }, { wch: 9 }, { wch: 10 }, { wch: 9 }, { wch: 10 }, { wch: 16 }, { wch: 16 }, { wch: 16 }, { wch: 16 }];
-
-      const wb = window.XLSX.utils.book_new();
-      window.XLSX.utils.book_append_sheet(wb, wsTakvim, 'Takvim');
-      window.XLSX.utils.book_append_sheet(wb, wsMali, 'Mali Özet');
-      window.XLSX.writeFile(wb, `asik-veysel-${appYear}-takvimi.xlsx`);
-      showToast(`${rows.length} kayıt Excel olarak indirildi (Takvim + Mali Özet).`);
-    }
-
-    function parseFlexibleExcelDate(value) {
-      if (value instanceof Date && !Number.isNaN(value.getTime())) {
-        return `${String(value.getDate()).padStart(2, '0')}.${String(value.getMonth() + 1).padStart(2, '0')}.${value.getFullYear()}`;
-      }
-      const s = String(value || '').trim();
-      let m = s.match(/^(\d{1,2})[.\-/](\d{1,2})[.\-/](\d{4})$/);
-      if (m) return `${m[1].padStart(2, '0')}.${m[2].padStart(2, '0')}.${m[3]}`;
-      m = s.match(/^(\d{4})-(\d{1,2})-(\d{1,2})/);
-      if (m) return `${m[3].padStart(2, '0')}.${m[2].padStart(2, '0')}.${m[1]}`;
-      const num = Number(s.replace(',', '.'));
-      if (!Number.isNaN(num) && num > 20000 && num < 80000) {
-        const d = new Date(Math.round((num - 25569) * 86400 * 1000));
-        return `${String(d.getUTCDate()).padStart(2, '0')}.${String(d.getUTCMonth() + 1).padStart(2, '0')}.${d.getUTCFullYear()}`;
-      }
-      return '';
-    }
-
-    async function importEventsFromExcel(file) {
-      if (typeof window.XLSX === 'undefined') {
-        showToast('Excel modülü henüz yüklenmedi. İnternet bağlantınızı kontrol edip sayfayı yenileyin.');
-        return;
-      }
-      if (!canEditSchedule()) {
-        showToast('Excel içe aktarmak için yetkili kullanıcı girişi gereklidir.');
-        openUserAccessModal();
-        return;
-      }
-      try {
-        const buf = await file.arrayBuffer();
-        const wb = window.XLSX.read(buf, { cellDates: true });
-        if (!wb.SheetNames.length) throw new Error('Dosyada sayfa bulunamadı.');
-        const sheetName = wb.SheetNames.find(n => String(n).toLocaleLowerCase('tr').includes('takvim')) || wb.SheetNames[0];
-        const rows = window.XLSX.utils.sheet_to_json(wb.Sheets[sheetName], { header: 1, defval: '' });
-        if (!rows.length) throw new Error('Dosyada veri bulunamadı.');
-
-        let headerRow = null, headerIdx = -1;
-        for (let i = 0; i < Math.min(rows.length, 10); i++) {
-          const cells = rows[i].map(c => String(c).trim().toLocaleLowerCase('tr'));
-          const hasDate = cells.some(c => c === 'tarih' || c === 'date');
-          const hasName = cells.some(c => c.includes('etkinlik') || c.includes('sanat') || c === 'name');
-          if (hasDate && hasName) { headerRow = cells; headerIdx = i; break; }
-        }
-        if (!headerRow) throw new Error('Başlık satırı bulunamadı. Dosyada "Tarih" ve "Etkinlik/Sanatçı" kolonları olmalı.');
-
-        const colOf = names => headerRow.findIndex(h => names.some(n => h === n || h.includes(n)));
-        const iDate = colOf(['tarih', 'date']);
-        const iName = colOf(['etkinlik', 'sanat', 'name']);
-        if (iDate < 0 || iName < 0) throw new Error('"Tarih" ve "Etkinlik/Sanatçı" kolonları bulunamadı.');
-        const iCat = colOf(['kategori', 'category']);
-        const iFee = colOf(['ücret', 'tutar', 'fee']);
-        const iBooking = colOf(['rezervasyon']);
-        const iInvoice = colOf(['fatura durumu']);
-        const iDue = colOf(['vade']);
-        const iStatus = colOf(['not']);
-
-        const validCategories = ['Konser', 'Tiyatro', 'Mezuniyet', 'Kurulum', 'Etkinlik'];
-        const validBookings = ['Normal', 'Teminat Alındı', 'Ödeme Alındı', 'Tarih Opsiyonlu'];
-        const validInvoices = ['Beklemede', 'Kesildi', 'Muaf'];
-        const matchValue = (raw, list) => {
-          const norm = String(raw || '').trim().toLocaleLowerCase('tr');
-          return list.find(v => v.toLocaleLowerCase('tr') === norm) || '';
-        };
-
-        let added = 0, skipped = 0, firstAdded = null;
-        for (let r = headerIdx + 1; r < rows.length; r++) {
-          const row = rows[r];
-          if (!row || !row.join('').trim()) continue;
-          const dateStr = parseFlexibleExcelDate(row[iDate]);
-          const name = String(row[iName] || '').trim();
-          if (!dateStr || !name) { skipped++; continue; }
-          const isDuplicate = currentEvents.some(ev => ev.date === dateStr && ev.name.toLocaleLowerCase('tr') === name.toLocaleLowerCase('tr'));
-          if (isDuplicate) { skipped++; continue; }
-
-          const category = matchValue(iCat >= 0 ? row[iCat] : '', validCategories) || 'Konser';
-          const feeCell = iFee >= 0 ? String(row[iFee] || '').trim() : '';
-          const isFreeCell = feeCell.toLocaleUpperCase('tr').includes('ÜCRETSİZ');
-          const feeInfo = isFreeCell
-            ? { feeValue: 0, feeRaw: 'ÜCRETSİZ', isFree: true }
-            : normalizeFeeInput(feeCell.replace(/tl/ig, '').trim(), false);
-          const bookingStatus = matchValue(iBooking >= 0 ? row[iBooking] : '', validBookings) || 'Normal';
-          const invoiceStatus = matchValue(iInvoice >= 0 ? row[iInvoice] : '', validInvoices) || (feeInfo.isFree ? 'Muaf' : 'Beklemede');
-          const dueStr = iDue >= 0 ? parseFlexibleExcelDate(row[iDue]) : '';
-          const dueIso = dueStr ? dueStr.split('.').reverse().join('-') : '';
-          const statusVal = iStatus >= 0 ? String(row[iStatus] || '').trim() : '';
-
-          const maxId = currentEvents.reduce((mx, it) => Math.max(mx, Number(it.id) || 0), 0);
-          const created = hydrateEvent({
-            id: maxId + 1,
-            date: dateStr,
-            name,
-            category,
-            feeRaw: feeInfo.feeRaw,
-            feeValue: feeInfo.feeValue,
-            isFree: feeInfo.isFree,
-            bookingStatus,
-            invoiceStatus,
-            dueDate: dueIso,
-            status: statusVal || 'EK KOLTUK'
-          }, maxId + 1);
-          currentEvents = [...currentEvents, created];
-          if (!firstAdded) firstAdded = created;
-          added++;
-        }
-
-        if (!added) {
-          showToast('Eklenecek yeni kayıt bulunamadı (tümü zaten mevcut ya da satırlar geçersizdi).');
-          return;
-        }
-        saveEventsToStorage(currentEvents);
-        if (firstAdded) {
-          if (firstAdded.year !== appYear) {
-            appYear = firstAdded.year;
-            persistAppYear();
-            applyYearToDom();
-          }
-          state.currentMonth = firstAdded.monthIndex;
-        }
-        renderApp();
-        showToast(`${added} kayıt Excel'den takvime eklendi${skipped ? `, ${skipped} satır atlandı` : ''}.`);
-      } catch (err) {
-        showToast(`Excel içe aktarma hatası: ${err.message}`);
-      }
     }
 
     function openJsonModal() {
@@ -3198,9 +3043,46 @@
       });
     }
 
+    function yearLabel() {
+      return state.year === 'all' ? 'Tüm Yıllar' : String(state.year);
+    }
+
+    function renderYearSelect() {
+      const sel = document.getElementById('yearSelect');
+      if (!sel) return;
+      const ys = new Set(currentEvents.map(e => e.year));
+      ys.add(2027); ys.add(2028); ys.add(state.currentYear);
+      ys.add(Math.max(...ys) + 1);
+      const list = [...ys].filter(y => y >= 2020 && y <= 2040).sort((a, b) => a - b);
+      sel.innerHTML = list.map(y => `<option value="${y}">${y}</option>`).join('') + '<option value="all">Tüm Yıllar</option>';
+      sel.value = String(state.year);
+    }
+
+    function syncYearUI() {
+      renderYearSelect();
+      const label = yearLabel();
+      ['kpiYearChip', 'listYearLabel', 'acctYearChip', 'summaryYearLabel'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.textContent = label;
+      });
+    }
+
+    function shiftMonth(delta) {
+      let m = state.currentMonth + delta;
+      let y = state.currentYear;
+      if (m < 0) { m = 11; y -= 1; }
+      if (m > 11) { m = 0; y += 1; }
+      if (y < 2020 || y > 2040) return;
+      state.currentMonth = m;
+      state.currentYear = y;
+      if (state.year !== 'all') state.year = y;
+      renderApp();
+    }
+
     function renderApp() {
       applyPermissionUI();
       refreshDuePaymentAlerts(false);
+      syncYearUI();
       const filtered = getFilteredEvents();
       updateKPIs(filtered);
       updateCategoryButtons();
@@ -3253,13 +3135,19 @@
       document.getElementById('mobileTopAddBtn').addEventListener('click', () => openEventFormModal());
       document.getElementById('mobileNavAccessBtn').addEventListener('click', openUserAccessModal);
 
-      document.getElementById('prevMonthBtn').addEventListener('click', () => { state.currentMonth = (state.currentMonth + 11) % 12; renderApp(); });
-      document.getElementById('nextMonthBtn').addEventListener('click', () => { state.currentMonth = (state.currentMonth + 1) % 12; renderApp(); });
+      document.getElementById('prevMonthBtn').addEventListener('click', () => shiftMonth(-1));
+      document.getElementById('nextMonthBtn').addEventListener('click', () => shiftMonth(1));
       document.getElementById('monthSelect').addEventListener('change', e => { state.currentMonth = parseInt(e.target.value, 10); renderApp(); });
+      document.getElementById('yearSelect').addEventListener('change', e => {
+        const v = e.target.value;
+        if (v === 'all') { state.year = 'all'; }
+        else { state.year = Number(v); state.currentYear = state.year; }
+        renderApp();
+      });
 
-      document.getElementById('prevYearBtn').addEventListener('click', () => setYear(appYear - 1));
-      document.getElementById('nextYearBtn').addEventListener('click', () => setYear(appYear + 1));
-      document.getElementById('yearSelect').addEventListener('change', e => setYear(e.target.value));
+      document.querySelectorAll('.jump-month-btn').forEach(btn => {
+        btn.addEventListener('click', () => { state.currentMonth = parseInt(btn.dataset.jumpMonth, 10); setView('calendar'); });
+      });
 
       document.getElementById('searchInput').addEventListener('input', e => { state.search = e.target.value; renderApp(); });
       document.getElementById('clearSearchBtn').addEventListener('click', () => { state.search = ''; document.getElementById('searchInput').value = ''; renderApp(); });
@@ -3293,14 +3181,8 @@
       document.getElementById('sortSelect').addEventListener('change', e => { state.sortBy = e.target.value; renderApp(); });
       document.getElementById('exportCsvBtn').addEventListener('click', () => exportToCsv(getSortedEvents(getFilteredEvents())));
       document.getElementById('mobileExportCsvBtn').addEventListener('click', () => exportToCsv(getSortedEvents(getFilteredEvents())));
-      document.getElementById('exportExcelBtn').addEventListener('click', exportToExcel);
-      document.getElementById('mobileExportExcelBtn').addEventListener('click', exportToExcel);
-      document.getElementById('exportExcelFromBackupBtn').addEventListener('click', exportToExcel);
-      document.getElementById('excelImportFileInput').addEventListener('change', e => {
-        const file = e.target.files && e.target.files[0];
-        if (file) importEventsFromExcel(file);
-        e.target.value = '';
-      });
+      document.getElementById('exportIcsBtn').addEventListener('click', () => exportToIcs(getSortedEvents(getFilteredEvents())));
+      document.getElementById('mobileExportIcsBtn').addEventListener('click', () => exportToIcs(getSortedEvents(getFilteredEvents())));
       document.getElementById('printBtn').addEventListener('click', () => window.print());
 
       document.getElementById('filterDueUnpaidBtn').addEventListener('click', () => {
@@ -3378,7 +3260,7 @@
         showToast(`"${username}" kullanıcısı oluşturuldu.`);
       });
 
-      document.getElementById('openAddEventBtn').addEventListener('click', () => openEventFormModal({ defaultDateIso: `${appYear}-${String(state.currentMonth + 1).padStart(2, '0')}-01` }));
+      document.getElementById('openAddEventBtn').addEventListener('click', () => openEventFormModal());
       document.getElementById('closeEventFormModalBtn').addEventListener('click', closeEventFormModal);
       document.getElementById('cancelEventFormBtn').addEventListener('click', closeEventFormModal);
 
@@ -3413,6 +3295,8 @@
       document.getElementById('cancelDeleteBtn').addEventListener('click', () => document.getElementById('deleteConfirmBox').classList.add('hidden'));
       document.getElementById('confirmDeleteBtn').addEventListener('click', () => {
         const targetId = Number(document.getElementById('editEventId').value);
+        const doomed = currentEvents.find(item => item.id === targetId);
+        if (doomed && window.__ops) window.__ops.purgeEventFiles(doomed);
         currentEvents = currentEvents.filter(item => item.id !== targetId);
         saveEventsToStorage(currentEvents);
         closeEventFormModal();
@@ -3447,7 +3331,7 @@
         e.preventDefault();
         const nameVal = document.getElementById('eventNameInput').value.trim();
         if (!nameVal) { document.getElementById('eventNameError').classList.remove('hidden'); return; }
-        const isoDate = document.getElementById('eventDateInput').value || `${appYear}-05-07`;
+        const isoDate = document.getElementById('eventDateInput').value || `${state.currentYear}-01-01`;
         const [yStr, mStr, dStr] = isoDate.split('-');
         const formattedDate = `${dStr}.${mStr}.${yStr}`;
         const isFreeVal = document.getElementById('eventFreeToggle').checked;
@@ -3477,17 +3361,16 @@
         if (editIdRaw) {
           const targetId = Number(editIdRaw);
           currentEvents = currentEvents.map(item => item.id === targetId ? hydrateEvent({ ...item, ...recordData }, targetId) : item);
+          const upd = currentEvents.find(i => i.id === targetId);
+          if (upd) { state.currentMonth = upd.monthIndex; state.currentYear = upd.year; if (state.year !== 'all') state.year = upd.year; }
           showToast('Kayıt güncellendi.');
         } else {
           const maxId = currentEvents.reduce((max, item) => Math.max(max, Number(item.id) || 0), 0);
           const created = hydrateEvent({ id: maxId + 1, ...recordData }, maxId + 1);
           currentEvents = [...currentEvents, created];
           state.currentMonth = created.monthIndex;
-          if (created.year !== appYear) {
-            appYear = created.year;
-            persistAppYear();
-            applyYearToDom();
-          }
+          state.currentYear = created.year;
+          if (state.year !== 'all') state.year = created.year;
           showToast('Yeni etkinlik eklendi.');
         }
 
@@ -3525,7 +3408,7 @@
         const url = URL.createObjectURL(blob);
         const link = document.createElement('a');
         link.href = url;
-        link.download = `asik-veysel-${appYear}-takvimi-yedek.json`;
+        link.download = 'asik-veysel-takvimi-yedek.json';
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
@@ -3568,12 +3451,14 @@
     }
 
     window.addEventListener('DOMContentLoaded', () => {
-      applyYearToDom();
       bindEvents();
       initTeamNote();
       renderApp();
     });
   </script>
+  <script src="operasyon.js"></script>
+  <script src="excel-tools.js"></script>
+  <script src="firebase-config.js"></script>
   <script type="module" src="cloud-sync.js"></script>
   <script>
     if ('serviceWorker' in navigator && location.protocol.startsWith('http')) {
