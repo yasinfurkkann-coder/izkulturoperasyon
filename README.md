@@ -9,15 +9,22 @@ damga vergisi, tahsilat ve fatura takibi; JSON yedek/geri yükleme, CSV dışa a
 
 - **Önyüz:** tek sayfalık statik uygulama (`public/index.html`, vanilla JS + Tailwind CDN).
   Tarayıcıda çalışır, veriyi önce `localStorage`'a yazar, sonra buluta senkronize eder.
-- **Canlı senkronizasyon:** `cloud-sync.js`, `/api/state` uç noktasını kullanır. Her cihaz
-  etkinlik listesi, damga vergisi oranı, yetkili kullanıcılar ve ekip notunu tek bir paylaşılan
-  belgeye yazar; her cihaz 4 saniyede bir değişiklikleri kontrol eder.
-- **Backend:** Netlify Server (`netlify/server/index.mjs`) `/api/state` için GET (oku) ve
-  PUT (kısmi güncelle) desteği verir.
-- **Veritabanı:** Netlify Database (yönetilen Postgres). Şema `netlify/database/migrations/`
-  altındaki SQL migration ile oluşturulur; `team_state` tablosu tek satırlık paylaşılan belgeyi
-  tutar.
+  Çok yıllı takvim desteği vardır (2027+).
+- **Canlı senkronizasyon:** `cloud-sync.js`, Firebase Firestore üzerinden tek belge
+  (`takvim/2027`) ile canlı senkron yapar (`onSnapshot`). Operasyon dosyalarındaki sözleşme
+  PDF/fotoğraflar `takvim_dosyalar` koleksiyonunda parçalı saklanır. `firebase-config.js`
+  boşsa uygulama "Yerel Mod"da çalışır.
+- **Excel entegrasyonu:** `excel-tools.js` ile .xlsx içe/dışa aktarma; `operasyon.js` ile
+  operasyon dosyası yükleme.
+- **Backend:** kullanılmıyor; eski `/api/state` Netlify backend'i (`netlify/`) geri dönük
+  uyumluluk için duruyor.
 - **PWA:** `manifest.webmanifest` ve `sw.js` ile telefona kurulabilir, çevrimdışı açılır.
+
+## Firebase kurulumu
+
+Çoklu cihaz canlı senkron için Firebase Firestore kurulum adımları `KURULUM.md` dosyasında.
+`firebase-config.js` içindeki placeholder değerler Firebase konsolundan alınan gerçek değerlerle
+değiştirilir.
 
 ## Yerelde çalıştırma
 
